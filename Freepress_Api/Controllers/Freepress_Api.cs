@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 namespace Freepress_Api.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
     public class Freepress_Api : ControllerBase
     {
         private readonly ILogger<Freepress_Api> _logger;
@@ -16,8 +15,8 @@ namespace Freepress_Api.Controllers
             _logger = logger;
             _freepressDbContext = freepressDbContext;
         }
-
-        [HttpGet(Name = "Quick-filter")]
+        [Route("api/getnews")]
+        [HttpGet]
         public async Task<IEnumerable<newsmodel>> Get()
         {
             //return Enumerable.Range(1, 5).Select(index => new WeatherForecast
