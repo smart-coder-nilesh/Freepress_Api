@@ -4,6 +4,7 @@ using Freepress_Api.DbContextFiles;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Freepress_Api.Migrations
 {
     [DbContext(typeof(FreepressDbContext))]
-    partial class FreepressDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241214182525_Add-Migration subcriber-model")]
+    partial class AddMigrationsubcribermodel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -55,9 +58,6 @@ namespace Freepress_Api.Migrations
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("dateTime")
-                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 

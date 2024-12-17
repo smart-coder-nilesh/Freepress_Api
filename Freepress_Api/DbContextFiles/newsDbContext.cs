@@ -9,8 +9,9 @@ namespace Freepress_Api.DbContextFiles
         {
 
         }
-        public DbSet<Author> AuthorDbContext { get; set; }
-        public DbSet<newsmodel> newsDbContext { get; set; }
+        public DbSet<Author> Author { get; set; }
+        public DbSet<newsmodel> news { get; set; }
+        public DbSet<Subscribe> subscribe { get; set; }
 
 
     }

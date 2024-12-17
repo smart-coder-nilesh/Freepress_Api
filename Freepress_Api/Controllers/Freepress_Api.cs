@@ -10,26 +10,43 @@ namespace Freepress_Api.Controllers
     {
         private readonly ILogger<Freepress_Api> _logger;
         public FreepressDbContext _freepressDbContext;
-        public Freepress_Api(ILogger<Freepress_Api> logger , FreepressDbContext freepressDbContext)
+        public Freepress_Api(ILogger<Freepress_Api> logger ,FreepressDbContext freepressDbContext)
         {
             _logger = logger;
             _freepressDbContext = freepressDbContext;
         }
-        [Route("api/getnews")]
+        [Route("Api/getnews")]
         [HttpGet]
         public async Task<IEnumerable<newsmodel>> Get()
         {
-            //return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            //{
-            //    Date = DateTime.Now.AddDays(index),
-            //    TemperatureC = Random.Shared.Next(-20, 55),
-            //    Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-            //})
-            //.ToArray();
-            var news = await  _freepressDbContext.newsDbContext.ToListAsync();
-
-
+            var news = await  _freepressDbContext.news.Take(10).ToListAsync();
             return news!=null ? news : new List<newsmodel>();
         }
+        [Route("Api/Subscribe")]
+        [HttpPost]
+        public async Task<JsonResult> AddEmail([FromBody]Emailobject email)
+        {
+            var subcriber_model = new Subscribe
+            {
+                Email = email.Email,
+                dateTime = DateTime.Now,
+            };
+
+            if ( await _freepressDbContext.subscribe.AnyAsync(x => x.Email.ToLower() == email.Email.ToLower()))
+            {
+
+                return new JsonResult(new { Message = "Thanks you are alreay register", Email = email });
+            }
+            else
+            {
+                var res = await _freepressDbContext.subscribe.AddAsync(subcriber_model);
+                await _freepressDbContext.SaveChangesAsync();
+
+                return new JsonResult(new { Message = "successfully Subscribed to Newsleter", Email = email });
+            }
+
+        }
+
+        
     }
 }

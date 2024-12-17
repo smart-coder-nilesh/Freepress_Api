@@ -14,7 +14,7 @@ builder.Services.AddDbContext<FreepressDbContext>(options => options.UseSqlServe
 
 builder.Services.AddCors(Options =>
 {
-    Options.AddPolicy("allowspecificorigin", builder => builder.WithOrigins("http://localhost:3000").AllowAnyHeader().AllowAnyMethod());
+    Options.AddPolicy("allowspecificorigin", builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 });
 
 
