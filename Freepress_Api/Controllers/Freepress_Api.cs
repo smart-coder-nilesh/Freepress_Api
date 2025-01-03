@@ -15,12 +15,28 @@ namespace Freepress_Api.Controllers
             _logger = logger;
             _freepressDbContext = freepressDbContext;
         }
-        [Route("Api/getnews")]
+
+
+        [Route("Api/getnews/{parse?}")]
         [HttpGet]
-        public async Task<IEnumerable<newsmodel>> Get()
+        public async Task<IEnumerable<newsmodel>> Get(string? parse)
         {
-            var news = await  _freepressDbContext.news.Take(10).ToListAsync();
-            return news!=null ? news : new List<newsmodel>();
+            IQueryable<newsmodel> query = _freepressDbContext.news;
+            if (!string.IsNullOrEmpty(parse))
+            {
+                query = query.Where(n => n.title.Contains(parse));
+            }
+            var news = await query.Take(10).ToListAsync();
+            return news != null ? news : new List<newsmodel>();
+        }
+
+
+        [Route("Api/TrendingStories/{page?}")]
+        [HttpGet]
+        public async Task<JsonResult> getTrendingstories(int page = 0 )
+        {
+            var results = _freepressDbContext.stories.Skip(page * 4).Take(8);
+            return new JsonResult(new { results });
         }
         [Route("Api/Subscribe")]
         [HttpPost]
@@ -34,7 +50,6 @@ namespace Freepress_Api.Controllers
 
             if ( await _freepressDbContext.subscribe.AnyAsync(x => x.Email.ToLower() == email.Email.ToLower()))
             {
-
                 return new JsonResult(new { Message = "Thanks you are alreay register", Email = email });
             }
             else

@@ -17,7 +17,6 @@ builder.Services.AddCors(Options =>
     Options.AddPolicy("allowspecificorigin", builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 });
 
-
 var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
